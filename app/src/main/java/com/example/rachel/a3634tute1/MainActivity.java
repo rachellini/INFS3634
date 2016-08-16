@@ -12,7 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
+
+    private StringBuilder operation = new StringBuilder();
+    private Double num1 = 0.0;
+    private Double num2 = 0.0;
+    private String operate = "";
+    private Double calculate = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,60 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Button multiply = (Button) findViewById(R.id.timesButton);
-        multiply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Double number1 = Double.parseDouble(((EditText) findViewById(R.id.number1)).getText().toString());
-                Double number2 = Double.parseDouble(((EditText) findViewById(R.id.number2)).getText().toString());
-
-                Double answer = number1 * number2;
-
-                calculate(answer);
-            }
-        });
-
-        Button divide = (Button) findViewById(R.id.divideButton);
-        divide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Double number1 = Double.parseDouble(((EditText) findViewById(R.id.number1)).getText().toString());
-                Double number2 = Double.parseDouble(((EditText) findViewById(R.id.number2)).getText().toString());
-
-                Double answer = number1/number2;
-
-                calculate(answer);
-
-            }
-        });
-
-        Button plus = (Button) findViewById(R.id.plusButton);
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Double number1 = Double.parseDouble(((EditText) findViewById(R.id.number1)).getText().toString());
-                Double number2 = Double.parseDouble(((EditText) findViewById(R.id.number2)).getText().toString());
-
-                Double answer = number1 + number2;
-
-                calculate(answer);
-
-            }
-        });
-
-        Button minus = (Button) findViewById(R.id.minusButton);
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Double number1 = Double.parseDouble(((EditText) findViewById(R.id.number1)).getText().toString());
-                Double number2 = Double.parseDouble(((EditText) findViewById(R.id.number2)).getText().toString());
-
-                Double answer = number1 - number2;
-
-                calculate(answer);
-            }
-        });
     }
 
     @Override
@@ -103,8 +57,61 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void calculate(Double answer) {
-        TextView calculate = (TextView) findViewById(R.id.answer);
-        calculate.setText(String.format("Total: %.2f", answer));
+    public void numberOnClick(View view) {
+        Button value = (Button) view;
+        TextView answer = (TextView) findViewById(R.id.numberDisplay);
+
+        operation = operation.append(value.getText());
+        answer.setText(operation);
     }
+
+    public void operatorOnClick(View view) {
+        Button operator = (Button) view;
+        TextView answer = (TextView) findViewById(R.id.numberDisplay);
+
+        num1 = Double.parseDouble(operation.toString());
+        operate = (String) operator.getText();
+        //System.out.print(num1 + operate);
+
+        operation = operation.append(operator.getText());
+        answer.setText(operation);
+    }
+
+    public void equalsOnClick(View view){
+        TextView answer = (TextView) findViewById(R.id.numberDisplay);
+        String elementsString = operation.toString();
+        String[] elements = elementsString.split(Pattern.quote(operate));
+        num2 = Double.parseDouble(elements[1]);
+
+        switch(operate) {
+            case("+"):
+                calculate = num1 + num2;
+                break;
+            case("-"):
+                calculate = num1 - num2;
+                break;
+            case("/"):
+                calculate = num1/num2;
+                break;
+            case("x"):
+                calculate = num1*num2;
+                break;
+        }
+
+        answer.setText(calculate.toString());
+        operation.setLength(0);
+        operation.append(calculate);
+    }
+
+    public void clearOnClick(View view) {
+        Button clear = (Button) view;
+        TextView answer = (TextView) findViewById(R.id.numberDisplay);
+
+        operation.setLength(0);
+        answer.setText(operation);
+        num1 = 0.0;
+        num2 = 0.0;
+        operate = "";
+    }
+
 }

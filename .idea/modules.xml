@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/INFS3634 Lab Repo.iml" filepath="$PROJECT_DIR$/INFS3634 Lab Repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/INFS3634.iml" filepath="$PROJECT_DIR$/INFS3634.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
